@@ -139,10 +139,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d773fe9423c3bc243aa25abd5a725f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawDebugRaycasts: 1
   playerSpeed: 4
   jumpForce: 50
-  groundDistance: 0.2
-  groundlayer:
+  playerOffSet: 0.35
+  groundDistance: 0.7
+  groundLayer:
     serializedVersion: 2
     m_Bits: 512
   isOnGround: 0

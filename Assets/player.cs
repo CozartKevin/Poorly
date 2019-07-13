@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class player : MonoBehaviour
 {
+    public bool drawDebugRaycasts = true;
+
     public InputMaster controls;
     private Rigidbody2D rb2D;
 
@@ -17,30 +19,32 @@ public class player : MonoBehaviour
     [Header("Jump Properties")]
     private float isJumping = 0; //float input from InputMaster for jump button press
     public float jumpForce = 10.0f; //force of jump
-    private bool hasJumped = false; //delete once we get a ground check implimented.
-
+    private float maxJumpForce = 15f;
 
     [Header("Environment Check Properties")]
+    public float playerOffSet = 0.4f;
     public float groundDistance = 0.2f;
-    public LayerMask groundlayer;
+    public LayerMask groundLayer;
 
-   
+
 
     [Header("Status Flags")]
     public bool isOnGround;
+    public bool hasJumped = false; //delete once we get a ground check implimented.
+    private bool isMoving = false;
 
     void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
         controls = new InputMaster();
-        controls.Player.Jump.performed += contex => isJumping =contex.ReadValue<float>();
+        controls.Player.Jump.performed += contex => isJumping = contex.ReadValue<float>();
         controls.Player.Jump.canceled += contex => isJumping = contex.ReadValue<float>();
         controls.Player.Movement.performed += context => direction = context.ReadValue<Vector2>(); //sets direction Vector2 to + or - values depending on direction once keys are pressed
         controls.Player.Movement.canceled += context => direction = context.ReadValue<Vector2>();  //sets direction Vector2 to 0 once keys are released
 
     }
 
-   
+
 
     private void Start()
     {
@@ -49,29 +53,45 @@ public class player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbodyAddForces();
 
+
+        isOnGround = false;
+        RaycastHit2D leftSideGrounded = Raycast(new Vector2(-playerOffSet, 0f), Vector2.down, groundDistance);
+        RaycastHit2D rightsideGrounded = Raycast(new Vector2(playerOffSet, 0f), Vector2.down, groundDistance);
+
+        if (leftSideGrounded || rightsideGrounded)
+        {
+            isOnGround = true;
+        }
+        rigidbodyAddForces();
     }
 
     private void rigidbodyAddForces()
     {
-        
-        rb2D.AddRelativeForce(direction * playerSpeed, ForceMode2D.Impulse); //Takes input direction, speed setting and applies it to object/player rigidbody.
 
+        rb2D.AddRelativeForce(direction * playerSpeed, ForceMode2D.Impulse); //Takes input direction, speed setting and applies it to object/player rigidbody.
         rigidbodyAddForceJump();
     }
 
+
+
+
     private void rigidbodyAddForceJump()
     {
-        if (isJumping > 0 && !hasJumped)
-        {
-            rb2D.AddRelativeForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            hasJumped = true;
-        }
-        else if (isJumping == 0)
-        {
-            hasJumped = false;
-        }
+        
+            if (isJumping == 1 && isOnGround)
+            {
+              
+                  
+                   rb2D.AddRelativeForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                  
+                hasJumped = true;
+                  
+            }
+            else if(isOnGround)
+            {
+                hasJumped = false;
+            }
     }
 
 
@@ -100,5 +120,39 @@ public class player : MonoBehaviour
     {
         controls.Disable();
     }
+
+
+    //Below leveraged from playerMovement.cs from the RobbiePlatformer from Live training Unite Berlin 2019  https://www.youtube.com/watch?v=j29NgzV8Dw4
+
+    //These two Raycast methods wrap the Physics2D.Raycast() and provide some extra
+    //functionality
+    RaycastHit2D Raycast(Vector2 offset, Vector2 rayDirection, float length)
+    {
+        //Call the overloaded Raycast() method using the ground layermask and return 
+        //the results
+        return Raycast(offset, rayDirection, length, groundLayer);
+    }
+
+    RaycastHit2D Raycast(Vector2 offset, Vector2 rayDirection, float length, LayerMask mask)
+    {
+        //Record the player's position
+        Vector2 pos = transform.position;
+
+        //Send out the desired raycasr and record the result
+        RaycastHit2D hit = Physics2D.Raycast(pos + offset, rayDirection, length, mask);
+
+        //If we want to show debug raycasts in the scene...
+        if (drawDebugRaycasts)
+        {
+            //...determine the color based on if the raycast hit...
+            Color color = hit ? Color.red : Color.green;
+            //...and draw the ray in the scene view
+            Debug.DrawRay(pos + offset, rayDirection * length, color);
+        }
+
+        //Return the results of the raycast
+        return hit;
+    }
+
 
 }

@@ -379,5 +379,25 @@ PrefabInstance:
       propertyPath: playerSpeed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7095149228766657467, guid: 77184071624861246bc7e922d8de2615,
+        type: 3}
+      propertyPath: groundlayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7095149228766657467, guid: 77184071624861246bc7e922d8de2615,
+        type: 3}
+      propertyPath: groundDistance
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7095149228766657467, guid: 77184071624861246bc7e922d8de2615,
+        type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 7095149228766657467, guid: 77184071624861246bc7e922d8de2615,
+        type: 3}
+      propertyPath: playerOffSet
+      value: 0.35
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77184071624861246bc7e922d8de2615, type: 3}

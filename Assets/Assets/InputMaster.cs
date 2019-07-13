@@ -294,18 +294,6 @@ public class InputMaster : IInputActionCollection
                     ""isComposite"": false,
                     ""isPartOfComposite"": false,
                     ""modifiers"": """"
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ca30c763-4a6e-469d-8564-8db56a2c2013"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
                 }
             ]
         }

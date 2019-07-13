@@ -31,7 +31,7 @@ public class InputMaster : IInputActionCollection
                     ""bindings"": []
                 },
                 {
-                    ""name"": ""Shoot"",
+                    ""name"": ""Jump"",
                     ""id"": ""d914407d-5356-4b0f-82df-de7bff3ce683"",
                     ""expectedControlLayout"": """",
                     ""continuous"": false,
@@ -290,7 +290,7 @@ public class InputMaster : IInputActionCollection
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false,
                     ""modifiers"": """"
@@ -302,7 +302,7 @@ public class InputMaster : IInputActionCollection
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false,
                     ""modifiers"": """"
@@ -345,7 +345,7 @@ public class InputMaster : IInputActionCollection
         // Player
         m_Player = asset.GetActionMap("Player");
         m_Player_Movement = m_Player.GetAction("Movement");
-        m_Player_Shoot = m_Player.GetAction("Shoot");
+        m_Player_Jump = m_Player.GetAction("Jump");
     }
 
     ~InputMaster()
@@ -399,13 +399,13 @@ public class InputMaster : IInputActionCollection
     private InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private InputAction m_Player_Movement;
-    private InputAction m_Player_Shoot;
+    private InputAction m_Player_Jump;
     public struct PlayerActions
     {
         private InputMaster m_Wrapper;
         public PlayerActions(InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement { get { return m_Wrapper.m_Player_Movement; } }
-        public InputAction @Shoot { get { return m_Wrapper.m_Player_Shoot; } }
+        public InputAction @Jump { get { return m_Wrapper.m_Player_Jump; } }
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -419,9 +419,9 @@ public class InputMaster : IInputActionCollection
                 Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -429,9 +429,9 @@ public class InputMaster : IInputActionCollection
                 Movement.started += instance.OnMovement;
                 Movement.performed += instance.OnMovement;
                 Movement.canceled += instance.OnMovement;
-                Shoot.started += instance.OnShoot;
-                Shoot.performed += instance.OnShoot;
-                Shoot.canceled += instance.OnShoot;
+                Jump.started += instance.OnJump;
+                Jump.performed += instance.OnJump;
+                Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -463,6 +463,6 @@ public class InputMaster : IInputActionCollection
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

@@ -17,7 +17,7 @@
                     "bindings": []
                 },
                 {
-                    "name": "Shoot",
+                    "name": "Jump",
                     "id": "d914407d-5356-4b0f-82df-de7bff3ce683",
                     "expectedControlLayout": "",
                     "continuous": false,
@@ -276,7 +276,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false,
                     "modifiers": ""
@@ -288,7 +288,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": ";Keyboard and Mouse",
-                    "action": "Shoot",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false,
                     "modifiers": ""

@@ -40,6 +40,17 @@ public class InputMaster : IInputActionCollection
                     ""processors"": """",
                     ""interactions"": """",
                     ""bindings"": []
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""id"": ""6e1b33a2-4c7e-4958-a1e0-b3f4eb8f5e32"",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""bindings"": []
                 }
             ],
             ""bindings"": [
@@ -264,7 +275,7 @@ public class InputMaster : IInputActionCollection
                     ""id"": ""ac163737-f7b2-4c2a-b3bc-8a8aeddf7413"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Clamp(max=1)"",
                     ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -276,7 +287,7 @@ public class InputMaster : IInputActionCollection
                     ""id"": ""893d5534-1591-4313-966b-02cf6cbde8b6"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Clamp(max=1)"",
                     ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -291,6 +302,30 @@ public class InputMaster : IInputActionCollection
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3df19abc-491e-4c38-ba7c-7fa34221fb56"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": ""Clamp(max=1)"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22902046-c0e2-4558-a976-d87bc30b7779"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": ""Clamp(max=1)"",
+                    ""groups"": "";Keyboard and Mouse"",
+                    ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false,
                     ""modifiers"": """"
@@ -334,6 +369,7 @@ public class InputMaster : IInputActionCollection
         m_Player = asset.GetActionMap("Player");
         m_Player_Movement = m_Player.GetAction("Movement");
         m_Player_Jump = m_Player.GetAction("Jump");
+        m_Player_Crouch = m_Player.GetAction("Crouch");
     }
 
     ~InputMaster()
@@ -388,12 +424,14 @@ public class InputMaster : IInputActionCollection
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private InputAction m_Player_Movement;
     private InputAction m_Player_Jump;
+    private InputAction m_Player_Crouch;
     public struct PlayerActions
     {
         private InputMaster m_Wrapper;
         public PlayerActions(InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement { get { return m_Wrapper.m_Player_Movement; } }
         public InputAction @Jump { get { return m_Wrapper.m_Player_Jump; } }
+        public InputAction @Crouch { get { return m_Wrapper.m_Player_Crouch; } }
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -410,6 +448,9 @@ public class InputMaster : IInputActionCollection
                 Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -420,6 +461,9 @@ public class InputMaster : IInputActionCollection
                 Jump.started += instance.OnJump;
                 Jump.performed += instance.OnJump;
                 Jump.canceled += instance.OnJump;
+                Crouch.started += instance.OnCrouch;
+                Crouch.performed += instance.OnCrouch;
+                Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -452,5 +496,6 @@ public class InputMaster : IInputActionCollection
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }

@@ -11,9 +11,12 @@ public class player : MonoBehaviour
     public InputMaster controls;
     private Rigidbody2D rb2D;
 
+
     [Header("Movement Properties")]
     private Vector2 direction;  //vector2 input from InputMaster for left and right buttons pressed for movement of player.
-    public float playerSpeed = 5;
+    public float playerSpeed = 5f;
+    private float isCrouching = 0f;
+    public float crouchSize = 0.6f;
 
 
     [Header("Jump Properties")]
@@ -23,7 +26,7 @@ public class player : MonoBehaviour
 
     [Header("Environment Check Properties")]
     public float playerOffSet = 0.4f;
-    public float groundDistance = 0.2f;
+    public float groundDistance = 0.65f;
     public LayerMask groundLayer;
 
 
@@ -32,16 +35,24 @@ public class player : MonoBehaviour
     public bool isOnGround;
     public bool hasJumped = false; //delete once we get a ground check implimented.
     private bool isMoving = false;
+    
+    private float playerHeight;
 
     void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
+       
+
         controls = new InputMaster();
         controls.Player.Jump.performed += contex => isJumping = contex.ReadValue<float>();
         controls.Player.Jump.canceled += contex => isJumping = contex.ReadValue<float>();
+        controls.Player.Crouch.performed += contex => isCrouching = contex.ReadValue<float>();
+        controls.Player.Crouch.canceled += contex => isCrouching = contex.ReadValue<float>();
         controls.Player.Movement.performed += context => direction = context.ReadValue<Vector2>(); //sets direction Vector2 to + or - values depending on direction once keys are pressed
         controls.Player.Movement.canceled += context => direction = context.ReadValue<Vector2>();  //sets direction Vector2 to 0 once keys are released
 
+
+       
     }
 
 
@@ -63,54 +74,52 @@ public class player : MonoBehaviour
         {
             isOnGround = true;
         }
-        rigidbodyAddForces();
+        rigidbodyMovement();
     }
 
-    private void rigidbodyAddForces()
+    private void rigidbodyMovement()
     {
 
-        rb2D.AddRelativeForce(direction * playerSpeed, ForceMode2D.Impulse); //Takes input direction, speed setting and applies it to object/player rigidbody.
-        rigidbodyAddForceJump();
+        rb2D.velocity = new Vector2(direction.x * playerSpeed, rb2D.velocity.y); //Movement Force
+
+        rigidbodyJump();
+        rigidBodyCrouch();
+     
     }
 
-
-
-
-    private void rigidbodyAddForceJump()
+    private void rigidBodyCrouch()
     {
-        
-            if (isJumping == 1 && isOnGround)
-            {
-              
-                  
-                   rb2D.AddRelativeForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-                  
-                hasJumped = true;
-                  
-            }
-            else if(isOnGround)
-            {
-                hasJumped = false;
-            }
-    }
-
-
-
-
-    /*
-        void jumpInputDetection(bool jumpingDetect)
+       if(isCrouching == 1f)
         {
-            Debug.Log("Hip hop hippity Hop!");
-            if (jumpingDetect)
-            {
-                isJumping = true;
-            }
-            else
-            {
-                isJumping = false;
-            }
+           
+            // rb2D.transform.parent.localScale = new Vector3(1f, crouchSize, 1f);
+           transform.localScale = new Vector3(1f, crouchSize,1f);
         }
-        */
+        else
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+          // rb2D.transform.parent.localScale = new Vector3(1f, 1f, 1f);
+             //rb2D.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+    }
+
+    private void rigidbodyJump()
+    {
+
+        if (isJumping == 1 && isOnGround)
+        {
+            rb2D.velocity = new Vector2(0f, jumpForce);
+            hasJumped = true;
+        }
+        else if (isOnGround)
+        {
+            hasJumped = false;
+        }
+    }
+
+
+
+
     private void OnEnable()
     {
         controls.Enable();

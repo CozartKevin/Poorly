@@ -110,7 +110,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 7095149228766657444}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 38649f32b193f1b4f9de051e813a4010, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -140,11 +140,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawDebugRaycasts: 1
-  playerSpeed: 4
-  jumpForce: 50
+  playerSpeed: 10
+  jumpForce: 15
   playerOffSet: 0.35
   groundDistance: 0.7
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
   isOnGround: 0
+  hasJumped: 0

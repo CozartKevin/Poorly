@@ -26,6 +26,17 @@
                     "processors": "",
                     "interactions": "",
                     "bindings": []
+                },
+                {
+                    "name": "Crouch",
+                    "id": "6e1b33a2-4c7e-4958-a1e0-b3f4eb8f5e32",
+                    "expectedControlLayout": "",
+                    "continuous": false,
+                    "passThrough": false,
+                    "initialStateCheck": false,
+                    "processors": "",
+                    "interactions": "",
+                    "bindings": []
                 }
             ],
             "bindings": [
@@ -250,7 +261,7 @@
                     "id": "ac163737-f7b2-4c2a-b3bc-8a8aeddf7413",
                     "path": "<Keyboard>/a",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Clamp(max=1)",
                     "groups": "Keyboard and Mouse",
                     "action": "Movement",
                     "isComposite": false,
@@ -262,7 +273,7 @@
                     "id": "893d5534-1591-4313-966b-02cf6cbde8b6",
                     "path": "<Keyboard>/d",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Clamp(max=1)",
                     "groups": "Keyboard and Mouse",
                     "action": "Movement",
                     "isComposite": false,
@@ -277,6 +288,30 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                },
+                {
+                    "name": "",
+                    "id": "3df19abc-491e-4c38-ba7c-7fa34221fb56",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "Clamp(max=1)",
+                    "groups": ";Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                },
+                {
+                    "name": "",
+                    "id": "22902046-c0e2-4558-a976-d87bc30b7779",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "Clamp(max=1)",
+                    "groups": ";Keyboard and Mouse",
+                    "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false,
                     "modifiers": ""
